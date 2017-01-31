@@ -29,6 +29,8 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 {
 	_client = client;
 
+	messageMap["ConfigureStream"] = WSRequestHandler::HandleConfigureStream;
+
 	messageMap["GetVersion"] = WSRequestHandler::HandleGetVersion;
 	messageMap["GetAuthRequired"] = WSRequestHandler::HandleGetAuthRequired;
 	messageMap["Authenticate"] = WSRequestHandler::HandleAuthenticate;
@@ -77,7 +79,7 @@ void WSRequestHandler::processTextMessage(QString textMessage) {
 	}
 
 	_requestType = obs_data_get_string(_requestData, "request-type");
-	_messageId = obs_data_get_string(_requestData, "message-id");
+	_messageId = obs_data_get_string(_requestData, "message_id");
 
 	if (Config::Current()->AuthRequired 
 		&& !_authenticated 
@@ -125,7 +127,7 @@ WSRequestHandler::~WSRequestHandler() {
 void WSRequestHandler::SendOKResponse(obs_data_t *additionalFields) {
 	obs_data_t *response = obs_data_create();
 	obs_data_set_string(response, "status", "ok");
-	obs_data_set_string(response, "message-id", _messageId);
+	obs_data_set_string(response, "message_id", _messageId);
 
 	if (additionalFields != NULL) {
 		obs_data_apply(response, additionalFields);
@@ -140,11 +142,34 @@ void WSRequestHandler::SendErrorResponse(const char *errorMessage) {
 	obs_data_t *response = obs_data_create();
 	obs_data_set_string(response, "status", "error");
 	obs_data_set_string(response, "error", errorMessage);
-	obs_data_set_string(response, "message-id", _messageId);
+	obs_data_set_string(response, "message_id", _messageId);
 
 	_client->sendTextMessage(obs_data_get_json(response));
 
 	obs_data_release(response);
+}
+
+void WSRequestHandler::HandleConfigureStream(WSRequestHandler *owner) {
+	//obs_service_t *oldService = obs_get_service;
+	obs_data_t *data = obs_data_create();
+	//obs_data_t *sources_data = obs_data_create();
+	//obs_service_t *service = obs_service_create("rtmp_common", "default_service", nullptr,	nullptr);
+	obs_service_t *service = obs_get_service_by_name("default_service");
+
+	obs_data_t *service_data= obs_data_create();
+	obs_data_set_string(service_data, "key", "54321");
+	obs_service_update(service, service_data);
+
+	//obs_enum_sources([](void *sources_data, obs_source_t *source);
+	//obs_enum_sources([](void *sources_data, obs_source_t *source);
+
+	obs_data_t *settings = obs_service_get_settings(service);
+	obs_data_set_string(data, "debug","xxxx");
+	const char *json = obs_data_get_json(settings);
+	obs_data_set_string(data, "service", json);
+	owner->SendOKResponse(data);
+
+	obs_data_release(data);
 }
 
 void WSRequestHandler::HandleGetVersion(WSRequestHandler *owner) {
