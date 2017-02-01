@@ -9,3 +9,5 @@
 /Win32
 /x64/Debug
 /x64/Release
+/obs-websocket.dir/Debug
+/obs-websocket.dir/Release

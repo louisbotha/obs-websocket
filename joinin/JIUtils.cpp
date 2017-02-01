@@ -22,22 +22,18 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 obs_data_t* JIUtils::ConfigureStream(obs_data_t *config_data) {
 
 	obs_data_t *result = obs_data_create();
+
 	const char *config_key = obs_data_get_string(config_data, "key");
 	const char *config_server = obs_data_get_string(config_data, "server");
 	const char *config_service = obs_data_get_string(config_data, "service");
 
-	//obs_data_t *sources_data = obs_data_create();
-	//obs_service_t *service = obs_service_create("rtmp_common", "default_service", nullptr,	nullptr);
-	obs_service_t *service = obs_get_service_by_name("default_service");
-
 	obs_data_t *service_data = obs_data_create();
-	obs_data_set_string(service_data, "key", config_key);
-	obs_data_set_string(service_data, "server", config_server);
-	obs_data_set_string(service_data, "service", config_service);
-	obs_service_update(service, service_data);
+	obs_data_set_string(service_data, "key", config_key);			// rtmp stream key
+	obs_data_set_string(service_data, "server", config_server);		// rtmp://a.rtmp.youtube.com/live2
+	obs_data_set_string(service_data, "service", config_service);	// YouTube / YouTube Gaming
 
-	//obs_enum_sources([](void *sources_data, obs_source_t *source);
-	//obs_enum_sources([](void *sources_data, obs_source_t *source);
+	obs_service_t *service = obs_get_service_by_name("default_service");
+	obs_service_update(service, service_data);
 
 	return JIUtils::GetStreamConfig(config_data);
 }
