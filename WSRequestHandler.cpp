@@ -32,6 +32,7 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 
 	messageMap["ConfigureStream"] = WSRequestHandler::HandleConfigureStream;
 	messageMap["ConfigureScene"] = WSRequestHandler::HandleConfigureScene;
+	messageMap["ConfigureVideo"] = WSRequestHandler::HandleConfigureVideo;
 	messageMap["GetStreamConfig"] = WSRequestHandler::HandleGetStreamConfig;
 
 	messageMap["GetVersion"] = WSRequestHandler::HandleGetVersion;
@@ -160,6 +161,12 @@ void WSRequestHandler::HandleConfigureStream(WSRequestHandler *owner) {
 
 void WSRequestHandler::HandleConfigureScene(WSRequestHandler *owner) {
 	obs_data_t *data = JIUtils::ConfigureScene(owner->_requestData);
+	owner->SendOKResponse(data);
+	obs_data_release(data);
+}
+
+void WSRequestHandler::HandleConfigureVideo(WSRequestHandler *owner) {
+	obs_data_t *data = JIUtils::ConfigureVideo(owner->_requestData);
 	owner->SendOKResponse(data);
 	obs_data_release(data);
 }

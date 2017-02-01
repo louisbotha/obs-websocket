@@ -19,6 +19,15 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include "Utils.h"
 #include "JIUtils.h"
 
+
+obs_data_t* JIUtils::ConfigureVideo(obs_data_t *config_data) {
+
+	obs_data_t *result = JIUtils::GetVideoConfig(config_data);
+
+	return result;
+}
+
+
 obs_data_t* JIUtils::ConfigureScene(obs_data_t *config_data) {
 
 	//TODO create scene with camera and screencast
@@ -61,3 +70,20 @@ obs_data_t* JIUtils::GetStreamConfig(obs_data_t *config_data) {
 	return result;
 }
 
+obs_data_t* JIUtils::GetVideoConfig(obs_data_t *config_data) {
+
+	obs_data_t *result = obs_data_create();
+	obs_video_info *ovi = new obs_video_info();
+	bool hasVideo = obs_get_video_info(ovi);
+	obs_data_set_string(result, "graphics_module", ovi->graphics_module);
+	obs_data_set_int(result, "base_width", ovi->base_width);
+	obs_data_set_int(result, "base_height", ovi->base_height);
+	obs_data_set_int(result, "output_width", ovi->output_width);
+	obs_data_set_int(result, "output_height", ovi->output_height);
+	obs_data_set_int(result, "base_width", ovi->base_width);
+	obs_data_set_int(result, "fps_num", ovi->fps_num);
+	obs_data_set_int(result, "fps_den", ovi->fps_den);
+	//obs_data_set_obj(result, "output_format",(char) ovi->output_format);
+
+	return result;
+}
