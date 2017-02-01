@@ -19,13 +19,15 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #ifndef JIUTILS_H
 #define JIUTILS_H
 
+#include "Utils.h"
 #include <obs-module.h>
 #include <obs-frontend-api.h>
 
 class JIUtils
 {
 	public:
-		static obs_data_t* JIUtils::ConfigureStream();
+		static obs_data_t* JIUtils::ConfigureStream(obs_data_t *config_data);
+		static obs_data_t* JIUtils::GetStreamConfig(obs_data_t *config_data);		
 };
 
-#endif // UTILS_H
+#endif // JIUTILS_H

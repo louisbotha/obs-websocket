@@ -56,6 +56,7 @@ class WSRequestHandler : public QObject
 		static void ErrNotImplemented(WSRequestHandler *owner);
 		
 		static void HandleConfigureStream(WSRequestHandler *owner);
+		static void HandleGetStreamConfig(WSRequestHandler *owner);
 
 		static void HandleGetVersion(WSRequestHandler *owner);
 		static void HandleGetAuthRequired(WSRequestHandler *owner);

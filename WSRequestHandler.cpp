@@ -31,6 +31,7 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 	_client = client;
 
 	messageMap["ConfigureStream"] = WSRequestHandler::HandleConfigureStream;
+	messageMap["GetStreamConfig"] = WSRequestHandler::HandleGetStreamConfig;
 
 	messageMap["GetVersion"] = WSRequestHandler::HandleGetVersion;
 	messageMap["GetAuthRequired"] = WSRequestHandler::HandleGetAuthRequired;
@@ -151,7 +152,13 @@ void WSRequestHandler::SendErrorResponse(const char *errorMessage) {
 }
 
 void WSRequestHandler::HandleConfigureStream(WSRequestHandler *owner) {
-	obs_data_t *data = JIUtils::ConfigureStream();
+	obs_data_t *data = JIUtils::ConfigureStream(owner->_requestData);
+	owner->SendOKResponse(data);
+	obs_data_release(data);
+}
+
+void WSRequestHandler::HandleGetStreamConfig(WSRequestHandler *owner) {
+	obs_data_t *data = JIUtils::GetStreamConfig(owner->_requestData);
 	owner->SendOKResponse(data);
 	obs_data_release(data);
 }
