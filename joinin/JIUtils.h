@@ -27,6 +27,7 @@ class JIUtils
 {
 	public:
 		static obs_data_t* JIUtils::ConfigureStream(obs_data_t *config_data);
+		static obs_data_t* JIUtils::ConfigureScene(obs_data_t *config_data);
 		static obs_data_t* JIUtils::GetStreamConfig(obs_data_t *config_data);		
 };
 

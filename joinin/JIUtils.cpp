@@ -19,6 +19,17 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include "Utils.h"
 #include "JIUtils.h"
 
+obs_data_t* JIUtils::ConfigureScene(obs_data_t *config_data) {
+
+	//TODO create scene with camera and screencast
+	obs_data_t *result = obs_data_create();
+	const char *scene_name = "test scene";
+	obs_scene_t *new_scene = obs_scene_create(scene_name);
+
+	return result;
+}
+
+
 obs_data_t* JIUtils::ConfigureStream(obs_data_t *config_data) {
 
 	obs_data_t *result = obs_data_create();
