@@ -22,7 +22,27 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 
 obs_data_t* JIUtils::ConfigureVideo(obs_data_t *config_data) {
 
+	obs_video_info *ovi = new obs_video_info();
+	bool hasVideo = obs_get_video_info(ovi);
+	ovi->fps_num = 20;
+
+	//see obs-defs.h
+	/*
+	#define OBS_VIDEO_SUCCESS           0
+	#define OBS_VIDEO_FAIL             -1
+	#define OBS_VIDEO_NOT_SUPPORTED    -2
+	#define OBS_VIDEO_INVALID_PARAM    -3
+	#define OBS_VIDEO_CURRENTLY_ACTIVE -4
+	#define OBS_VIDEO_MODULE_NOT_FOUND -5
+	*/
+	int video_result = obs_reset_video(ovi);
+	//obs.c: obs_reset_video
+	//window-basic-main.cpp: ret = AttemptToResetVideo(&ovi);
+	//obs_output_set_video
+	//obs_reset_video
+	//obs_service_apply_encoder_settings
 	obs_data_t *result = JIUtils::GetVideoConfig(config_data);
+	obs_data_set_int(result, "attempt", video_result);
 
 	return result;
 }
