@@ -3,3 +3,9 @@
 /build64/
 /release/
 /installer/Output/
+/CMakeFiles
+/Debug
+/obs-websocket_automoc.dir
+/Win32
+/x64/Debug
+/x64/Release
