@@ -79,7 +79,7 @@ void WSEvents::broadcastUpdate(const char *updateType, obs_data_t *additionalFie
 
 	obs_data_t *update = obs_data_create();
 
-	obs_data_set_string(update, "update-type", updateType);
+	obs_data_set_string(update, "update_type", updateType);
 	if (additionalFields != NULL) {
 		obs_data_apply(update, additionalFields);
 	}
