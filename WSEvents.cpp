@@ -115,7 +115,7 @@ void WSEvents::OnSceneChange() {
 	obs_data_t *data = obs_data_create();
 	obs_data_set_string(data, "scene-name", scene_name);
 	
-	broadcastUpdate("SwitchScenes", data);
+	broadcastUpdate("switch_schenes", data);
 
 	obs_data_release(data);
 	obs_source_release(new_scene);
@@ -123,7 +123,7 @@ void WSEvents::OnSceneChange() {
 }
 
 void WSEvents::OnSceneListChange() {
-	broadcastUpdate("ScenesChanged");
+	broadcastUpdate("schenes_changed");
 }
 
 void WSEvents::OnStreamStarting() {
@@ -131,7 +131,7 @@ void WSEvents::OnStreamStarting() {
 	obs_data_t *data = obs_data_create();
 	obs_data_set_bool(data, "preview-only", false);
 
-	broadcastUpdate("StreamStarting", data);
+	broadcastUpdate("stream_starting", data);
 
 	obs_data_release(data);
 }
@@ -140,7 +140,7 @@ void WSEvents::OnStreamStarted() {
 	// New update type specific to OBS Studio
 	_streamStartTime = os_gettime_ns();
 	_lastBytesSent = 0;
-	broadcastUpdate("StreamStarted");
+	broadcastUpdate("stream_started");
 }
 
 void WSEvents::OnStreamStopping() {
@@ -148,7 +148,7 @@ void WSEvents::OnStreamStopping() {
 	obs_data_t *data = obs_data_create();
 	obs_data_set_bool(data, "preview-only", false);
 
-	broadcastUpdate("StreamStopping", data);
+	broadcastUpdate("stream_stopping", data);
 
 	obs_data_release(data);
 }
@@ -156,32 +156,32 @@ void WSEvents::OnStreamStopping() {
 void WSEvents::OnStreamStopped() {
 	// New update type specific to OBS Studio
 	_streamStartTime = 0;
-	broadcastUpdate("StreamStopped");
+	broadcastUpdate("stream_stopped");
 }
 
 void WSEvents::OnRecordingStarting() {
 	// New update type specific to OBS Studio
-	broadcastUpdate("RecordingStarting");
+	broadcastUpdate("recording_starting");
 }
 
 void WSEvents::OnRecordingStarted() {
 	// New update type specific to OBS Studio
-	broadcastUpdate("RecordingStarted");
+	broadcastUpdate("recording_started");
 }
 
 void WSEvents::OnRecordingStopping() {
 	// New update type specific to OBS Studio
-	broadcastUpdate("RecordingStopping");
+	broadcastUpdate("recording_stopping");
 }
 
 void WSEvents::OnRecordingStopped() {
 	// New update type specific to OBS Studio
-	broadcastUpdate("RecordingStopped");
+	broadcastUpdate("recording_stopped");
 }
 
 void WSEvents::OnExit() {
 	// New update type specific to OBS Studio
-	broadcastUpdate("Exiting");
+	broadcastUpdate("exiting");
 }
 
 void WSEvents::StreamStatus() {
@@ -237,7 +237,7 @@ void WSEvents::StreamStatus() {
 	obs_data_set_double(data, "strain", strain);
 	obs_data_set_bool(data, "preview-only", false); // Retrocompat with OBSRemote
 
-	broadcastUpdate("StreamStatus", data);
+	broadcastUpdate("stream_status", data);
 
 	obs_data_release(data);
 	obs_output_release(stream_output);
