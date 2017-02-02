@@ -34,6 +34,7 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 	messageMap["ConfigureScene"] = WSRequestHandler::HandleConfigureScene;
 	messageMap["ConfigureVideo"] = WSRequestHandler::HandleConfigureVideo;
 	messageMap["GetStreamConfig"] = WSRequestHandler::HandleGetStreamConfig;
+	messageMap["ControlStreaming"] = WSRequestHandler::HandleControlStreaming;
 
 	messageMap["GetVersion"] = WSRequestHandler::HandleGetVersion;
 	messageMap["GetAuthRequired"] = WSRequestHandler::HandleGetAuthRequired;
@@ -149,7 +150,37 @@ void WSRequestHandler::SendErrorResponse(const char *errorMessage) {
 	obs_data_set_string(response, "message_id", _messageId);
 
 	_client->sendTextMessage(obs_data_get_json(response));
+	obs_data_release(response);
 
+}
+
+void WSRequestHandler::HandleControlStreaming(WSRequestHandler *owner) {
+	obs_data_t *response = obs_data_create();
+
+	const char *action = obs_data_get_string(owner->_requestData, "action");
+	obs_data_set_string(response, "action", action);
+
+	if (strcmp(action,"start_streaming") == 0) {
+		obs_frontend_streaming_start();
+		obs_data_set_string(response, "result", "started streaming");
+	}
+	else if (strcmp(action,"stop_streaming") == 0) {
+		obs_frontend_streaming_stop();
+		obs_data_set_string(response, "result", "stopped streaming");
+	}
+	else if (strcmp(action, "start_recording") == 0) {
+		obs_frontend_recording_start();
+		obs_data_set_string(response, "result", "started recording");
+	}
+	else if (strcmp(action, "stop_recording") == 0) {
+		obs_frontend_recording_stop();
+		obs_data_set_string(response, "result", "stopped recording");
+	} 
+	else {
+		obs_data_set_string(response, "result", "none");
+	}
+
+	owner->SendOKResponse(response);
 	obs_data_release(response);
 }
 
