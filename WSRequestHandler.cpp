@@ -33,6 +33,7 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 	messageMap["ConfigureStream"] = WSRequestHandler::HandleConfigureStream;
 	messageMap["ConfigureScene"] = WSRequestHandler::HandleConfigureScene;
 	messageMap["ConfigureVideo"] = WSRequestHandler::HandleConfigureVideo;
+	messageMap["ConfigureOutput"] = WSRequestHandler::HandleConfigureOutput;
 	messageMap["GetStreamConfig"] = WSRequestHandler::HandleGetStreamConfig;
 	messageMap["ControlStreaming"] = WSRequestHandler::HandleControlStreaming;
 
@@ -162,6 +163,8 @@ void WSRequestHandler::HandleControlStreaming(WSRequestHandler *owner) {
 
 	if (strcmp(action,"start_streaming") == 0) {
 		obs_frontend_streaming_start();
+		//see obs-output.c -> obs_output_actual_start(obs_output_t *output)
+		//obs_output_start
 		obs_data_set_string(response, "result", "started streaming");
 	}
 	else if (strcmp(action,"stop_streaming") == 0) {
@@ -198,6 +201,12 @@ void WSRequestHandler::HandleConfigureScene(WSRequestHandler *owner) {
 
 void WSRequestHandler::HandleConfigureVideo(WSRequestHandler *owner) {
 	obs_data_t *data = JIUtils::ConfigureVideo(owner->_requestData);
+	owner->SendOKResponse(data);
+	obs_data_release(data);
+}
+
+void WSRequestHandler::HandleConfigureOutput(WSRequestHandler *owner) {
+	obs_data_t *data = JIUtils::ConfigureOutput(owner->_requestData);
 	owner->SendOKResponse(data);
 	obs_data_release(data);
 }

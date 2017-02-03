@@ -29,6 +29,7 @@ class JIUtils
 		static obs_data_t* JIUtils::ConfigureStream(obs_data_t *config_data);
 		static obs_data_t* JIUtils::ConfigureScene(obs_data_t *config_data);
 		static obs_data_t* JIUtils::ConfigureVideo(obs_data_t *config_data);
+		static obs_data_t* JIUtils::ConfigureOutput(obs_data_t *config_data);
 		
 		static obs_data_t* JIUtils::GetStreamConfig(obs_data_t *config_data);		
 		static obs_data_t* JIUtils::GetVideoConfig(obs_data_t *config_data);

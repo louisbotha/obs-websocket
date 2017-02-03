@@ -47,6 +47,30 @@ obs_data_t* JIUtils::ConfigureVideo(obs_data_t *config_data) {
 	return result;
 }
 
+obs_data_t* JIUtils::ConfigureOutput(obs_data_t *config_data) {
+	//see window-basic-main-outputs.cpp -> AdvancedOutput::SetupFFmpeg() (reads from saved config file "basic.ini")
+	//see window-basic-settings.cpp line 2587
+	
+	//streamOutput = obs_output_create("rtmp_output", "adv_stream", nullptr, nullptr)
+	// to file: simple_ffmpeg_output
+	//advanced ffmpeg: adv_ffmpeg_output
+	obs_output *fileOutput = obs_output_create("ffmpeg_output", "adv_ffmpeg_output", nullptr, nullptr);
+	//obs_output *fileOutput = obs_output_create("rtmp_output","adv_stream", nullptr, nullptr);
+
+	obs_data_t *settings = obs_data_create();
+	obs_data_set_string(settings,"url", "udp://@127.0.0.1:9999");
+	obs_data_set_string(settings, "format_name", "mpegts");
+	obs_data_set_string(settings, "video_encoder", "mpeg2video");
+	//obs_output_update(fileOutput, settings);
+	//obs_frontend_get_global_config();
+	//obs_frontend_save();
+	obs_data_release(settings);
+
+	obs_output *op = obs_get_output_by_name("adv_ffmpeg_output");
+	obs_data_t *current = obs_output_get_settings(op);
+	return current;
+}
+
 
 obs_data_t* JIUtils::ConfigureScene(obs_data_t *config_data) {
 

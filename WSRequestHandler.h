@@ -58,6 +58,7 @@ class WSRequestHandler : public QObject
 		static void HandleConfigureStream(WSRequestHandler *owner);
 		static void HandleConfigureScene(WSRequestHandler *owner);
 		static void HandleConfigureVideo(WSRequestHandler *owner);
+		static void HandleConfigureOutput(WSRequestHandler *owner);
 		static void HandleGetStreamConfig(WSRequestHandler *owner);
 		static void HandleControlStreaming(WSRequestHandler *owner);
 
