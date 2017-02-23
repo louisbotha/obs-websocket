@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{BD2D87AB-1F34-3234-ADEC-A7287BAA6C62}</ProjectGUID>
+    <ProjectGUID>{BC7CA76C-E717-34A6-B64E-18031F00FDBF}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>x64</Platform>
     <ProjectName>INSTALL</ProjectName>
@@ -65,7 +65,7 @@
     </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\obs-websocket;D:\projects\git\grove\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -87,7 +87,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\obs-websocket;D:\projects\git\grove\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -109,7 +109,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\obs-websocket;D:\projects\git\grove\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -131,7 +131,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\obs-websocket;D:\projects\git\grove\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -152,7 +152,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="D:\projects\git\grove\obs-websocket\CMakeFiles\47db688294cb75d885604524799cc434\INSTALL_force.rule">
+    <CustomBuild Include="D:\projects\git\grove\joinin-obs\obs-websocket\CMakeFiles\6187d5ecb33033ec59f52f195085cf63\INSTALL_force.rule">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
 cd .
@@ -163,8 +163,8 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/projects/git/grove/obs-websocket/CMakeFiles/47db688294cb75d885604524799cc434/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\projects\git\grove\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:/projects/git/grove/joinin-obs/obs-websocket/CMakeFiles/6187d5ecb33033ec59f52f195085cf63/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\projects\git\grove\joinin-obs\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
@@ -176,8 +176,8 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/projects/git/grove/obs-websocket/CMakeFiles/47db688294cb75d885604524799cc434/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\projects\git\grove\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:/projects/git/grove/joinin-obs/obs-websocket/CMakeFiles/6187d5ecb33033ec59f52f195085cf63/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\projects\git\grove\joinin-obs\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
@@ -189,8 +189,8 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/projects/git/grove/obs-websocket/CMakeFiles/47db688294cb75d885604524799cc434/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\projects\git\grove\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:/projects/git/grove/joinin-obs/obs-websocket/CMakeFiles/6187d5ecb33033ec59f52f195085cf63/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\projects\git\grove\joinin-obs\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'"> </Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
@@ -202,17 +202,17 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/projects/git/grove/obs-websocket/CMakeFiles/47db688294cb75d885604524799cc434/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\projects\git\grove\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:/projects/git/grove/joinin-obs/obs-websocket/CMakeFiles/6187d5ecb33033ec59f52f195085cf63/INSTALL_force.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\projects\git\grove\joinin-obs\obs-websocket\CMakeFiles\INSTALL_force</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="D:/projects/git/grove/obs-websocket/ZERO_CHECK.vcxproj">
-      <Project>B97351BC-1477-3370-B493-C43BB4C33C68</Project>
+    <ProjectReference Include="D:/projects/git/grove/joinin-obs/obs-websocket/ZERO_CHECK.vcxproj">
+      <Project>EB600A51-071C-388F-A2CC-4A848C1D3B9E</Project>
     </ProjectReference>
-    <ProjectReference Include="D:/projects/git/grove/obs-websocket/ALL_BUILD.vcxproj">
-      <Project>845F9C8F-27F4-38C9-A6B5-57A5D0D9BFFB</Project>
+    <ProjectReference Include="D:/projects/git/grove/joinin-obs/obs-websocket/ALL_BUILD.vcxproj">
+      <Project>D21291B0-82F6-3617-B9E5-150960AE7FC5</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

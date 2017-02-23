@@ -33,7 +33,7 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 	messageMap["ConfigureStream"] = WSRequestHandler::HandleConfigureStream;
 	messageMap["ConfigureScene"] = WSRequestHandler::HandleConfigureScene;
 	messageMap["ConfigureVideo"] = WSRequestHandler::HandleConfigureVideo;
-	messageMap["ConfigureOutput"] = WSRequestHandler::HandleConfigureOutput;
+	messageMap["ProfileConfig"] = WSRequestHandler::HandleProfileConfig;
 	messageMap["GetStreamConfig"] = WSRequestHandler::HandleGetStreamConfig;
 	messageMap["ControlStreaming"] = WSRequestHandler::HandleControlStreaming;
 
@@ -205,17 +205,18 @@ void WSRequestHandler::HandleConfigureVideo(WSRequestHandler *owner) {
 	obs_data_release(data);
 }
 
-void WSRequestHandler::HandleConfigureOutput(WSRequestHandler *owner) {
-	obs_data_t *data = JIUtils::ConfigureOutput(owner->_requestData);
-	owner->SendOKResponse(data);
-	obs_data_release(data);
-}
-
 void WSRequestHandler::HandleGetStreamConfig(WSRequestHandler *owner) {
 	obs_data_t *data = JIUtils::GetStreamConfig(owner->_requestData);
 	owner->SendOKResponse(data);
 	obs_data_release(data);
 }
+
+void WSRequestHandler::HandleProfileConfig(WSRequestHandler *owner) {
+	obs_data_t *data = JIUtils::ProfileConfig(owner->_requestData);
+	owner->SendOKResponse(data);
+	obs_data_release(data);
+}
+
 
 void WSRequestHandler::HandleGetVersion(WSRequestHandler *owner) {
 	obs_data_t *data = obs_data_create();

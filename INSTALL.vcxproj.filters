@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="D:\projects\git\grove\obs-websocket\CMakeFiles\47db688294cb75d885604524799cc434\INSTALL_force.rule">
+    <CustomBuild Include="D:\projects\git\grove\joinin-obs\obs-websocket\CMakeFiles\6187d5ecb33033ec59f52f195085cf63\INSTALL_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{5D0AA945-C003-370D-AE2D-04EB13F548B5}</UniqueIdentifier>
+      <UniqueIdentifier>{BAEC5604-2473-361C-BA34-7DEE99E0E578}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
