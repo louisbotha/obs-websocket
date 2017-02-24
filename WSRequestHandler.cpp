@@ -162,21 +162,29 @@ void WSRequestHandler::HandleControlStreaming(WSRequestHandler *owner) {
 	obs_data_set_string(response, "action", action);
 
 	if (strcmp(action,"start_streaming") == 0) {
-		obs_frontend_streaming_start();
+		if (!obs_frontend_streaming_active()) {
+			obs_frontend_streaming_start();
+		}
 		//see obs-output.c -> obs_output_actual_start(obs_output_t *output)
 		//obs_output_start
 		obs_data_set_string(response, "result", "started streaming");
 	}
 	else if (strcmp(action,"stop_streaming") == 0) {
-		obs_frontend_streaming_stop();
+		if (obs_frontend_streaming_active()) {
+			obs_frontend_streaming_stop();
+		}
 		obs_data_set_string(response, "result", "stopped streaming");
 	}
 	else if (strcmp(action, "start_recording") == 0) {
-		obs_frontend_recording_start();
+		if (!obs_frontend_recording_active()) {
+			obs_frontend_recording_start();
+		}
 		obs_data_set_string(response, "result", "started recording");
 	}
 	else if (strcmp(action, "stop_recording") == 0) {
-		obs_frontend_recording_stop();
+		if (obs_frontend_recording_active()) {
+			obs_frontend_recording_stop();
+		}
 		obs_data_set_string(response, "result", "stopped recording");
 	} 
 	else {
