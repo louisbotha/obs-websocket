@@ -23,6 +23,7 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include <set>
 #include <QtWebSockets/QWebSocket>
 #include <obs-frontend-api.h>
+#include <qmainwindow.h>
 
 class WSRequestHandler : public QObject
 {
@@ -55,6 +56,8 @@ class WSRequestHandler : public QObject
 		void SendErrorResponse(const char *errorMessage);
 		static void ErrNotImplemented(WSRequestHandler *owner);
 		
+		static void HandleSetMainWindowState(WSRequestHandler *owner);
+
 		static void HandleConfigureStream(WSRequestHandler *owner);
 		static void HandleConfigureScene(WSRequestHandler *owner);
 		static void HandleConfigureVideo(WSRequestHandler *owner);

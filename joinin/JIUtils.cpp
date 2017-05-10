@@ -20,6 +20,21 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include "JIUtils.h"
 
 
+
+obs_data_t* JIUtils::SetMainWindowState(obs_data_t *config_data) {
+	obs_data_t *result = obs_data_create();
+	long window_state = obs_data_get_int(config_data, "window_state");
+
+	QMainWindow *window = (QMainWindow*)obs_frontend_get_main_window();
+	//see enum WindowState in QtCore\qnamespace.h
+	switch (window_state) {
+	case 1:
+		window->setWindowState(Qt::WindowMinimized);
+		break;
+	}
+		return result;
+
+}
 obs_data_t* JIUtils::CloseOBS(obs_data_t *config_data) {
 	//TODO
 	//see window-basic-main -> OBSBasic::closeEvent(QCloseEvent *event)

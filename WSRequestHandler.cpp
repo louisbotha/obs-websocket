@@ -30,6 +30,8 @@ WSRequestHandler::WSRequestHandler(QWebSocket *client) :
 {
 	_client = client;
 
+	messageMap["SetWindowState"] = WSRequestHandler::HandleSetMainWindowState;
+
 	messageMap["ConfigureStream"] = WSRequestHandler::HandleConfigureStream;
 	messageMap["ConfigureScene"] = WSRequestHandler::HandleConfigureScene;
 	messageMap["ConfigureVideo"] = WSRequestHandler::HandleConfigureVideo;
@@ -177,6 +179,8 @@ void WSRequestHandler::HandleControlStreaming(WSRequestHandler *owner) {
 	}
 	else if (strcmp(action, "start_recording") == 0) {
 		if (!obs_frontend_recording_active()) {
+			QMainWindow *window = (QMainWindow*)obs_frontend_get_main_window();
+			window->setWindowState(Qt::WindowMinimized);
 			obs_frontend_recording_start();
 		}
 		obs_data_set_string(response, "result", "started recording");
@@ -193,6 +197,12 @@ void WSRequestHandler::HandleControlStreaming(WSRequestHandler *owner) {
 
 	owner->SendOKResponse(response);
 	obs_data_release(response);
+}
+
+void WSRequestHandler::HandleSetMainWindowState(WSRequestHandler *owner) {
+	obs_data_t *data = JIUtils::SetMainWindowState(owner->_requestData);
+	owner->SendOKResponse(data);
+	obs_data_release(data);
 }
 
 void WSRequestHandler::HandleConfigureStream(WSRequestHandler *owner) {

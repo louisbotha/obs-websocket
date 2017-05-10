@@ -23,10 +23,13 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include <obs-module.h>
 #include <obs-frontend-api.h>
 #include "config-file.h"
+#include <qmainwindow.h>
 
 class JIUtils
 {
 	public:
+		static obs_data_t* JIUtils::SetMainWindowState(obs_data_t *config_data);
+
 		static obs_data_t* JIUtils::CloseOBS(obs_data_t *config_data);
 		static obs_data_t* JIUtils::ConfigureStream(obs_data_t *config_data);
 		static obs_data_t* JIUtils::ConfigureScene(obs_data_t *config_data);
@@ -35,6 +38,7 @@ class JIUtils
 		
 		static obs_data_t* JIUtils::GetStreamConfig(obs_data_t *config_data);		
 		static obs_data_t* JIUtils::GetVideoConfig(obs_data_t *config_data);
+
 };
 
 #endif // JIUTILS_H
