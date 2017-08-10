@@ -1,14 +1,18 @@
 obs-websocket
 ==============
-Websocket API for OBS Studio.
+Remote control of OBS Studio made easy.
+
+Follow the project on Twitter for news & updates : [@obswebsocket](https://twitter.com/obswebsocket)
+
+[![Gitter chat](https://badges.gitter.im/obs-websocket/obs-websocket.png)](https://gitter.im/obs-websocket/obs-websocket) [![Build Status - Windows](https://ci.appveyor.com/api/projects/status/github/Palakis/obs-websocket)](https://ci.appveyor.com/project/Palakis/obs-websocket/history) [![Build Status - Linux & OS X](https://travis-ci.org/Palakis/obs-websocket.svg?branch=master)](https://travis-ci.org/Palakis/obs-websocket)
 
 ## Downloads
 Binaries for Windows and Linux are available in the [Releases](https://github.com/Palakis/obs-websocket/releases) section.
 
 ## Using obs-websocket
-An HTML5 frontend made by [t2t2](https://github.com/t2t2/obs-tablet-remote) (compatible with tablets and other touch interfaces) is available here : http://t2t2.github.io/obs-tablet-remote/
+A web client and frontend made by [t2t2](https://github.com/t2t2/obs-tablet-remote) (compatible with tablets and other touch interfaces) is available here : http://t2t2.github.io/obs-tablet-remote/
 
-You may want to protect the Websocket server with some form of authentication. To do this, open the "Websocket server settings" dialog under OBS' "Tools" menu. In the settings dialogs, you can enable or disable authentication and set a password for it.
+It is **highly recommended** to protect obs-websocket with a password against unauthorized control. To do this, open the "Websocket server settings" dialog under OBS' "Tools" menu. In the settings dialogs, you can enable or disable authentication and set a password for it.
 
 ### Possible use cases
 - Remote control OBS from a phone or tablet on the same local network
@@ -16,35 +20,46 @@ You may want to protect the Websocket server with some form of authentication. T
 - Automate scene switching with a third-party program (e.g. : auto-pilot, foot pedal, ...)
 
 ### For developers
-The Websocket API server runs on port 4444 and the protocol is documented in [PROTOCOL.md](PROTOCOL.md).  
+The server is a typical Websockets server running by default on port 4444 (the port number can be changed in the Settings dialog). 
+The protocol understood by the server is documented in [PROTOCOL.md](PROTOCOL.md).  
 
 Here's a list of available language APIs for obs-websocket :
-- Javascript (browser & nodejs) : [obs-websocket-js](https://github.com/haganbmj/obs-websocket-js) by haganbmj
+- Javascript (browser & nodejs) : [obs-websocket-js](https://github.com/haganbmj/obs-websocket-js) by Brendan Hagan
+- C#/VB.NET : [obs-websocket-dotnet](https://github.com/Palakis/obs-websocket-dotnet)
+- Python : [obs-websocket-py](https://github.com/Elektordi/obs-websocket-py) by Guillaume Genty a.k.a Elektordi
 
 I'd like to know what you're building with or for obs-websocket. If you do something in this fashion, feel free to drop me an email at `contact at slepin dot fr` !
 
 ## Compiling obs-websocket
-### Prerequisites
-You'll need QT 5.7 with QtWebSockets, CMake, and a working development environment for OBS Studio installed on your computer. 
+See the [build instructions](BUILDING.md).
 
-### Windows
-In cmake-gui, you'll have to set the following variables :
-- **QTDIR** (path) : location of the Qt environment suited for your compiler and architecture
-- **LIBOBS_INCLUDE_DIR** (path) : location of the libobs subfolder in the source code of OBS Studio
-- **LIBOBS_LIB** (filepath) : location of the obs.lib file
-- **OBS_FRONTEND_LIB** (filepath) : location of the obs-frontend-api.lib file
+## Translations
+**We need your help on translations**. Please join the localization project on Crowdin: https://crowdin.com/project/obs-websocket
 
-### Linux
-On Debian/Ubuntu :  
-```
-sudo apt-get install libqt5websockets5-dev
-git clone --recursive https://github.com/Palakis/obs-websocket.git
-cd obs-websocket
-mkdir build && cd build
-cmake -DLIBOBS_INCLUDE_DIR="<path to the libobs sub-folder in obs-studio's source code>" -DCMAKE_INSTALL_PREFIX=/usr ..
-make -j4
-sudo make install
-```
+## Special thanks
+In order of appearance:
+- [Brendan H.](https://github.com/haganbmj) : Code contributions and better English in the Protocol specification
+- [Mikhail Swift](https://github.com/mikhailswift) : Code contributions
+- [Tobias Frahmer](https://github.com/Frahmer) : German translation
+- [Genture](https://github.com/Genteure) : Simplified Chinese and Traditional Chinese translations
+- [Larissa Gabilan](https://github.com/laris151) : Portuguese translation
+- [Andy Asquelt](https://github.com/asquelt) : Polish translation
+- [Marcel Haazen](https://github.com/inpothet) : Dutch translation
+- [Peter Antonvich](https://github.com/pantonvich) : Code contributions
 
-### OS X
-*To do*
+And also: special thanks to supporters of the project!
+
+## Supporters
+They have contributed financially to the project and made possible the addition of several features into obs-websocket. Many thanks to them!
+
+---
+
+[Support Class](http://supportclass.net) designs and develops professional livestreams, with services ranging from broadcast graphics design and integration to event organization, along many other skills.  
+
+[![Support Class](doc/supportclass_logo_blacktext.png)](http://supportclass.net)
+
+---
+
+[MediaUnit](http://www.mediaunit.no) is a Norwegian media company developing products and services for the media industry, primarly focused on web and events.  
+
+[![MediaUnit](doc/mediaunit_logo_black.png)](http://www.mediaunit.no/)

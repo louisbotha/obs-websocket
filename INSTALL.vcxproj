@@ -65,7 +65,7 @@
     </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio-19.0.3\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -87,7 +87,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio-19.0.3\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -109,7 +109,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio-19.0.3\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -131,7 +131,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\projects\git\grove\joinin-obs\obs-websocket;D:\projects\git\grove\joinin-obs\obs-studio-19.0.3\libobs\..\UI\obs-frontend-api;D:\projects\git\grove\joinin-obs\obs-websocket\deps\mbedtls\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>

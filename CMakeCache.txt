@@ -79,9 +79,6 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 //Install path prefix, prepended onto install directories.
 CMAKE_INSTALL_PREFIX:PATH=C:/Program Files/obs-websocket
 
-//Path to a program.
-CMAKE_LINKER:FILEPATH=C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/x86_amd64/link.exe
-
 //Flags used by the linker during the creation of modules.
 CMAKE_MODULE_LINKER_FLAGS:STRING=/machine:x64
 
@@ -99,9 +96,6 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=/debug /INCREMENTAL
 
 //Value Computed by CMake
 CMAKE_PROJECT_NAME:STATIC=obs-websocket
-
-//RC compiler
-CMAKE_RC_COMPILER:FILEPATH=rc
 
 //Flags for Windows Resource Compiler.
 CMAKE_RC_FLAGS:STRING=/DWIN32
@@ -165,19 +159,19 @@ ENABLE_ZLIB_SUPPORT:BOOL=OFF
 INSTALL_MBEDTLS_HEADERS:BOOL=ON
 
 //Path to a file.
-LIBOBS_INCLUDE_DIR:PATH=D:/projects/git/grove/joinin-obs/obs-studio/libobs
+LIBOBS_INCLUDE_DIR:PATH=D:/projects/git/grove/joinin-obs/obs-studio-19.0.3/libobs
 
 //Path to a library.
-LIBOBS_LIB:FILEPATH=D:/projects/git/grove/joinin-obs/obs-studio/build/Release/obs.lib
+LIBOBS_LIB:FILEPATH=D:/projects/git/grove/joinin-obs/obs-studio-19.0.3/build/Release/obs.lib
 
 //Explicitly link mbed TLS library to pthread.
 LINK_WITH_PTHREAD:BOOL=OFF
 
 //The directory containing a CMake configuration file for LibObs.
-LibObs_DIR:PATH=D:/projects/git/grove/joinin-obs/obs-studio/libobs
+LibObs_DIR:PATH=D:/projects/git/grove/joinin-obs/obs-studio-19.0.3/libobs
 
-//OBS frontend library
-OBS_FRONTEND_LIB:FILEPATH=D:/projects/git/grove/joinin-obs/obs-studio/build/Release/obs-frontend-api.lib
+//No help, variable specified on the command line.
+OBS_FRONTEND_LIB:UNINITIALIZED=D:\projects\git\grove\joinin-obs\obs-studio-19.0.3\build\Release\obs-frontend-api.lib
 
 //Path to a program.
 PERL_EXECUTABLE:FILEPATH=PERL_EXECUTABLE-NOTFOUND
@@ -189,7 +183,7 @@ PKG_CONFIG_EXECUTABLE:FILEPATH=PKG_CONFIG_EXECUTABLE-NOTFOUND
 QTDIR:UNINITIALIZED=C:\Qt5\5.7.0\msvc2015_64
 
 //The directory containing a CMake configuration file for Qt5Core.
-Qt5Core_DIR:PATH=Qt5Core_DIR-NOTFOUND
+Qt5Core_DIR:PATH=C:/Qt5/5.7.0/msvc2015_64/lib/cmake/Qt5Core
 
 //The directory containing a CMake configuration file for Qt5Gui.
 Qt5Gui_DIR:PATH=C:/Qt5/5.7.0/msvc2015_64/lib/cmake/Qt5Gui
@@ -237,7 +231,7 @@ mbedx509_LIB_DEPENDS:STATIC=general;ws2_32;general;mbedcrypto;
 obs-websocket_BINARY_DIR:STATIC=D:/projects/git/grove/joinin-obs/obs-websocket
 
 //Dependencies for the target
-obs-websocket_LIB_DEPENDS:STATIC=general;libobs;general;Qt5::Core;general;Qt5::WebSockets;general;Qt5::Widgets;general;mbedcrypto;general;D:/projects/git/grove/joinin-obs/obs-studio/build/Release/obs-frontend-api.lib;
+obs-websocket_LIB_DEPENDS:STATIC=general;libobs;general;Qt5::Core;general;Qt5::WebSockets;general;Qt5::Widgets;general;mbedcrypto;general;D:\projects\git\grove\joinin-obs\obs-studio-19.0.3\build\Release\obs-frontend-api.lib;
 
 //Value Computed by CMake
 obs-websocket_SOURCE_DIR:STATIC=D:/projects/git/grove/joinin-obs/obs-websocket
@@ -285,8 +279,6 @@ CMAKE_C_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 CMAKE_C_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_C_STANDARD_LIBRARIES
 CMAKE_C_STANDARD_LIBRARIES-ADVANCED:INTERNAL=1
-//Executable file format
-CMAKE_EXECUTABLE_FORMAT:INTERNAL=Unknown
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS
 CMAKE_EXE_LINKER_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_DEBUG
@@ -310,8 +302,6 @@ CMAKE_HAVE_PTHREAD_H:INTERNAL=
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=D:/projects/git/grove/joinin-obs/obs-websocket
-//ADVANCED property for variable: CMAKE_LINKER
-CMAKE_LINKER-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS
 CMAKE_MODULE_LINKER_FLAGS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_DEBUG
@@ -323,10 +313,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO
 CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1
-//ADVANCED property for variable: CMAKE_RC_COMPILER
-CMAKE_RC_COMPILER-ADVANCED:INTERNAL=1
-CMAKE_RC_COMPILER_WORKS:INTERNAL=1
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=13
 //ADVANCED property for variable: CMAKE_RC_FLAGS
 CMAKE_RC_FLAGS-ADVANCED:INTERNAL=1
 //Path to CMake installation.
@@ -360,7 +347,7 @@ CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CYGWIN_INSTALL_PATH
 CYGWIN_INSTALL_PATH-ADVANCED:INTERNAL=1
 //Details about finding Libobs
-FIND_PACKAGE_MESSAGE_DETAILS_Libobs:INTERNAL=[D:/projects/git/grove/joinin-obs/obs-studio/build/Release/obs.lib][D:/projects/git/grove/joinin-obs/obs-studio/libobs][v()]
+FIND_PACKAGE_MESSAGE_DETAILS_Libobs:INTERNAL=[D:/projects/git/grove/joinin-obs/obs-studio-19.0.3/build/Release/obs.lib][D:/projects/git/grove/joinin-obs/obs-studio-19.0.3/libobs][v()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: LIBOBS_INCLUDE_DIR

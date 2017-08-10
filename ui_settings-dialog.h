@@ -20,6 +20,7 @@
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -29,16 +30,20 @@ class Ui_SettingsDialog
 public:
     QVBoxLayout *verticalLayout;
     QFormLayout *formLayout;
+    QCheckBox *authRequired;
     QLabel *lbl_password;
     QLineEdit *password;
-    QCheckBox *authRequired;
+    QCheckBox *serverEnabled;
+    QLabel *lbl_serverPort;
+    QSpinBox *serverPort;
+    QCheckBox *debugEnabled;
     QDialogButtonBox *buttonBox;
 
     void setupUi(QDialog *SettingsDialog)
     {
         if (SettingsDialog->objectName().isEmpty())
             SettingsDialog->setObjectName(QStringLiteral("SettingsDialog"));
-        SettingsDialog->resize(354, 110);
+        SettingsDialog->resize(407, 175);
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -50,21 +55,46 @@ public:
         verticalLayout->setSizeConstraint(QLayout::SetDefaultConstraint);
         formLayout = new QFormLayout();
         formLayout->setObjectName(QStringLiteral("formLayout"));
+        authRequired = new QCheckBox(SettingsDialog);
+        authRequired->setObjectName(QStringLiteral("authRequired"));
+
+        formLayout->setWidget(3, QFormLayout::FieldRole, authRequired);
+
         lbl_password = new QLabel(SettingsDialog);
         lbl_password->setObjectName(QStringLiteral("lbl_password"));
 
-        formLayout->setWidget(3, QFormLayout::LabelRole, lbl_password);
+        formLayout->setWidget(4, QFormLayout::LabelRole, lbl_password);
 
         password = new QLineEdit(SettingsDialog);
         password->setObjectName(QStringLiteral("password"));
         password->setEchoMode(QLineEdit::Password);
 
-        formLayout->setWidget(3, QFormLayout::FieldRole, password);
+        formLayout->setWidget(4, QFormLayout::FieldRole, password);
 
-        authRequired = new QCheckBox(SettingsDialog);
-        authRequired->setObjectName(QStringLiteral("authRequired"));
+        serverEnabled = new QCheckBox(SettingsDialog);
+        serverEnabled->setObjectName(QStringLiteral("serverEnabled"));
+        serverEnabled->setChecked(true);
 
-        formLayout->setWidget(2, QFormLayout::FieldRole, authRequired);
+        formLayout->setWidget(1, QFormLayout::FieldRole, serverEnabled);
+
+        lbl_serverPort = new QLabel(SettingsDialog);
+        lbl_serverPort->setObjectName(QStringLiteral("lbl_serverPort"));
+
+        formLayout->setWidget(2, QFormLayout::LabelRole, lbl_serverPort);
+
+        serverPort = new QSpinBox(SettingsDialog);
+        serverPort->setObjectName(QStringLiteral("serverPort"));
+        serverPort->setMinimum(1024);
+        serverPort->setMaximum(65535);
+        serverPort->setValue(4444);
+
+        formLayout->setWidget(2, QFormLayout::FieldRole, serverPort);
+
+        debugEnabled = new QCheckBox(SettingsDialog);
+        debugEnabled->setObjectName(QStringLiteral("debugEnabled"));
+        debugEnabled->setChecked(false);
+
+        formLayout->setWidget(5, QFormLayout::FieldRole, debugEnabled);
 
 
         verticalLayout->addLayout(formLayout);
@@ -86,9 +116,12 @@ public:
 
     void retranslateUi(QDialog *SettingsDialog)
     {
-        SettingsDialog->setWindowTitle(QApplication::translate("SettingsDialog", "Settings.DialogTitle", 0));
-        lbl_password->setText(QApplication::translate("SettingsDialog", "Settings.Password", 0));
-        authRequired->setText(QApplication::translate("SettingsDialog", "Settings.AuthRequired", 0));
+        SettingsDialog->setWindowTitle(QApplication::translate("SettingsDialog", "OBSWebsocket.Settings.DialogTitle", 0));
+        authRequired->setText(QApplication::translate("SettingsDialog", "OBSWebsocket.Settings.AuthRequired", 0));
+        lbl_password->setText(QApplication::translate("SettingsDialog", "OBSWebsocket.Settings.Password", 0));
+        serverEnabled->setText(QApplication::translate("SettingsDialog", "OBSWebsocket.Settings.ServerEnable", 0));
+        lbl_serverPort->setText(QApplication::translate("SettingsDialog", "OBSWebsocket.Settings.ServerPort", 0));
+        debugEnabled->setText(QApplication::translate("SettingsDialog", "OBSWebsocket.Settings.DebugEnable", 0));
     } // retranslateUi
 
 };

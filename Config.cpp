@@ -1,6 +1,6 @@
 /*
 obs-websocket
-Copyright (C) 2016	Stéphane Lepin <stephane.lepin@gmail.com>
+Copyright (C) 2016-2017	Stéphane Lepin <stephane.lepin@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,135 +19,166 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #include <mbedtls/base64.h>
 #include <mbedtls/sha256.h>
 #include <obs-frontend-api.h>
+#include <util/config-file.h>
+#include <string>
+
+#define SECTION_NAME "WebsocketAPI"
+#define PARAM_ENABLE "ServerEnabled"
+#define PARAM_PORT "ServerPort"
+#define PARAM_DEBUG "DebugEnabled"
+#define PARAM_AUTHREQUIRED "AuthRequired"
+#define PARAM_SECRET "AuthSecret"
+#define PARAM_SALT "AuthSalt"
+
 #include "Config.h"
 
-#define CONFIG_SECTION_NAME "obs-websocket"
-#define CONFIG_PARAM_SECRET "auth_hash"
-#define CONFIG_PARAM_SALT "auth_salt"
-#define CONFIG_PARAM_AUTHREQUIRED "auth_required"
+Config* Config::_instance = new Config();
 
-Config *Config::_instance = new Config();
+Config::Config() :
+    ServerEnabled(true),
+    ServerPort(4444),
+    DebugEnabled(false),
+    AuthRequired(false),
+    Secret(""),
+    Salt(""),
+    SettingsLoaded(false) {
+    // OBS Config defaults
+    config_t* obs_config = obs_frontend_get_global_config();
+    if (obs_config) {
+        config_set_default_bool(obs_config, 
+            SECTION_NAME, PARAM_ENABLE, ServerEnabled);
+        config_set_default_uint(obs_config, 
+            SECTION_NAME, PARAM_PORT, ServerPort);
+            
+        config_set_default_bool(obs_config,
+            SECTION_NAME, PARAM_DEBUG, DebugEnabled);
 
-Config::Config() {
-	// Default settings
-	AuthRequired = false;
-	Secret = "";
-	Salt = "";
-	SettingsLoaded = false;
+        config_set_default_bool(obs_config, 
+            SECTION_NAME, PARAM_AUTHREQUIRED, AuthRequired);
+        config_set_default_string(obs_config, 
+            SECTION_NAME, PARAM_SECRET, Secret);
+        config_set_default_string(obs_config, 
+            SECTION_NAME, PARAM_SALT, Salt);
+    }
 
-	mbedtls_entropy_init(&entropy);
-	mbedtls_ctr_drbg_init(&rng);
-	mbedtls_ctr_drbg_seed(&rng, mbedtls_entropy_func, &entropy, nullptr, 0);
-	//mbedtls_ctr_drbg_set_prediction_resistance(&rng, MBEDTLS_CTR_DRBG_PR_ON);
+    mbedtls_entropy_init(&entropy);
+    mbedtls_ctr_drbg_init(&rng);
+    mbedtls_ctr_drbg_seed(&rng, mbedtls_entropy_func, &entropy, nullptr, 0);
 
-	SessionChallenge = GenerateSalt();
+    SessionChallenge = GenerateSalt();
 }
 
 Config::~Config() {
-	mbedtls_ctr_drbg_free(&rng);
-	mbedtls_entropy_free(&entropy);
+    mbedtls_ctr_drbg_free(&rng);
+    mbedtls_entropy_free(&entropy);
+}
+
+void Config::Load() {
+    config_t* obs_config = obs_frontend_get_global_config();
+
+    ServerEnabled = config_get_bool(obs_config, SECTION_NAME, PARAM_ENABLE);
+    ServerPort = config_get_uint(obs_config, SECTION_NAME, PARAM_PORT);
+    
+    DebugEnabled = config_get_bool(obs_config, SECTION_NAME, PARAM_DEBUG);
+
+    AuthRequired = config_get_bool(obs_config, SECTION_NAME, PARAM_AUTHREQUIRED);
+    Secret = config_get_string(obs_config, SECTION_NAME, PARAM_SECRET);
+    Salt = config_get_string(obs_config, SECTION_NAME, PARAM_SALT);
+}
+
+void Config::Save() {
+    config_t* obs_config = obs_frontend_get_global_config();
+
+    config_set_bool(obs_config, SECTION_NAME, PARAM_ENABLE, ServerEnabled);
+    config_set_uint(obs_config, SECTION_NAME, PARAM_PORT, ServerPort);
+    
+    config_set_bool(obs_config, SECTION_NAME, PARAM_DEBUG, DebugEnabled);
+
+    config_set_bool(obs_config, SECTION_NAME, PARAM_AUTHREQUIRED, AuthRequired);
+    config_set_string(obs_config, SECTION_NAME, PARAM_SECRET, Secret);
+    config_set_string(obs_config, SECTION_NAME, PARAM_SALT, Salt);
+
+    config_save(obs_config);
 }
 
 const char* Config::GenerateSalt() {
-	// Generate 32 random chars
-	unsigned char *random_chars = (unsigned char *)bzalloc(32);
-	mbedtls_ctr_drbg_random(&rng, random_chars, 32);
+    // Generate 32 random chars
+    unsigned char* random_chars = (unsigned char*)bzalloc(32);
+    mbedtls_ctr_drbg_random(&rng, random_chars, 32);
 
-	// Convert the 32 random chars to a base64 string
-	unsigned char *salt = (unsigned char*)bzalloc(64);
-	size_t salt_bytes;
-	mbedtls_base64_encode(salt, 64, &salt_bytes, random_chars, 32);
-	salt[salt_bytes] = 0; // Null-terminate the string
+    // Convert the 32 random chars to a base64 string
+    char* salt = (char*)bzalloc(64);
+    size_t salt_bytes;
+    mbedtls_base64_encode(
+        (unsigned char*)salt, 64, &salt_bytes,
+        random_chars, 32);
 
-	bfree(random_chars);
-	return (char *)salt;
+    bfree(random_chars);
+    return salt;
 }
 
-const char* Config::GenerateSecret(const char *password, const char *salt) {
-	size_t passwordLength = strlen(password);
-	size_t saltLength = strlen(salt);
+const char* Config::GenerateSecret(const char* password, const char* salt) {
+    // Concatenate the password and the salt
+    std::string passAndSalt = "";
+    passAndSalt += password;
+    passAndSalt += salt;
 
-	// Concatenate the password and the salt
-	unsigned char *passAndSalt = (unsigned char*)bzalloc(passwordLength + saltLength);
-	memcpy(passAndSalt, password, passwordLength);
-	memcpy(passAndSalt + passwordLength, salt, saltLength);
-	passAndSalt[passwordLength + saltLength] = 0; // Null-terminate the string
+    // Generate a SHA256 hash of the password
+    unsigned char* challengeHash = (unsigned char*)bzalloc(32);
+    mbedtls_sha256(
+        (unsigned char*)passAndSalt.c_str(), passAndSalt.length(),
+        challengeHash, 0);
+    
+    // Encode SHA256 hash to Base64
+    char* challenge = (char*)bzalloc(64);
+    size_t challenge_bytes = 0;
+    mbedtls_base64_encode(
+        (unsigned char*)challenge, 64, &challenge_bytes,
+        challengeHash, 32);
 
-	// Generate a SHA256 hash of the password
-	unsigned char *challengeHash = (unsigned char *)bzalloc(32);
-	mbedtls_sha256(passAndSalt, passwordLength + saltLength, challengeHash, 0);
-	
-	// Encode SHA256 hash to Base64
-	unsigned char *challenge = (unsigned char*)bzalloc(64);
-	size_t challenge_bytes = 0;
-	mbedtls_base64_encode(challenge, 64, &challenge_bytes, challengeHash, 32);
-	challenge[64] = 0; // Null-terminate the string
-
-	bfree(passAndSalt);
-	bfree(challengeHash);
-	return (char*)challenge;
+    bfree(challengeHash);
+    return challenge;
 }
 
-void Config::SetPassword(const char *password) {
-	const char *new_salt = GenerateSalt();
-	const char *new_challenge = GenerateSecret(password, new_salt);
+void Config::SetPassword(const char* password) {
+    const char* new_salt = GenerateSalt();
+    const char* new_challenge = GenerateSecret(password, new_salt);
 
-	this->Salt = new_salt;
-	this->Secret = new_challenge;
+    this->Salt = new_salt;
+    this->Secret = new_challenge;
 }
 
-bool Config::CheckAuth(const char *response) {
-	size_t secretLength = strlen(this->Secret);
-	size_t sessChallengeLength = strlen(this->SessionChallenge);
-	
-	// Concatenate auth secret with the challenge sent to the user
-	char *challengeAndResponse = (char*)bzalloc(secretLength + sessChallengeLength);
-	memcpy(challengeAndResponse, this->Secret, secretLength);
-	memcpy(challengeAndResponse + secretLength, this->SessionChallenge, sessChallengeLength);
-	challengeAndResponse[secretLength + sessChallengeLength] = 0; // Null-terminate the string
+bool Config::CheckAuth(const char* response) {
+    // Concatenate auth secret with the challenge sent to the user
+    std::string challengeAndResponse = "";
+    challengeAndResponse += this->Secret;
+    challengeAndResponse += this->SessionChallenge;
 
-	// Generate a SHA256 hash of challengeAndResponse
-	unsigned char *hash = (unsigned char*)bzalloc(32);
-	mbedtls_sha256((unsigned char*)challengeAndResponse, secretLength + sessChallengeLength, hash, 0);
+    // Generate a SHA256 hash of challengeAndResponse
+    unsigned char* hash = (unsigned char*)bzalloc(32);
+    mbedtls_sha256(
+        (unsigned char*)challengeAndResponse.c_str(),
+        challengeAndResponse.length(),
+        hash, 0);
 
-	// Encode the SHA256 hash to Base64
-	unsigned char *expected_response = (unsigned char*)bzalloc(64);
-	size_t base64_size = 0;
-	mbedtls_base64_encode(expected_response, 64, &base64_size, hash, 32);
-	expected_response[64] = 0; // Null-terminate the string
+    // Encode the SHA256 hash to Base64
+    char* expected_response = (char*)bzalloc(64);
+    size_t base64_size = 0;
+    mbedtls_base64_encode(
+        (unsigned char*)expected_response, 64, &base64_size,
+        hash, 32);
 
-	if (strcmp((char*)expected_response, response) == 0) {
-		SessionChallenge = GenerateSalt();
-		return true;
-	}
-	else {
-		return false;
-	}
-}
+    bool authSuccess = false;
+    if (strcmp(expected_response, response) == 0) {
+        SessionChallenge = GenerateSalt();
+        authSuccess = true;
+    }
 
-void Config::OBSSaveCallback(obs_data_t *save_data, bool saving, void *private_data) {
-	Config *conf = static_cast<Config *>(private_data);
-
-	if (saving) {
-		obs_data_t *settings = obs_data_create();
-		obs_data_set_bool(settings, CONFIG_PARAM_AUTHREQUIRED, conf->AuthRequired);
-		obs_data_set_string(settings, CONFIG_PARAM_SECRET, conf->Secret);
-		obs_data_set_string(settings, CONFIG_PARAM_SALT, conf->Salt);
-
-		obs_data_set_obj(save_data, CONFIG_SECTION_NAME, settings);
-	}
-	else {
-		obs_data_t *settings = obs_data_get_obj(save_data, CONFIG_SECTION_NAME);
-		if (settings) {
-			conf->AuthRequired = obs_data_get_bool(settings, CONFIG_PARAM_AUTHREQUIRED);
-			conf->Secret = obs_data_get_string(settings, CONFIG_PARAM_SECRET);
-			conf->Salt = obs_data_get_string(settings, CONFIG_PARAM_SALT);
-
-			conf->SettingsLoaded = true;
-		}
-	}
+    bfree(hash);
+    bfree(expected_response);
+    return authSuccess;
 }
 
 Config* Config::Current() {
-	return _instance;
+    return _instance;
 }

@@ -62,7 +62,4 @@
       <UniqueIdentifier>{AE6AA528-2964-3C03-BC54-CDD781086BD6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="cmake_obs_websocket.bat" />
-  </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 /*
 obs-websocket
-Copyright (C) 2016	Stéphane Lepin <stephane.lepin@gmail.com>
+Copyright (C) 2016-2017	Stéphane Lepin <stephane.lepin@gmail.com>
+Copyright (C) 2017	Brendan Hagan <https://github.com/haganbmj>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,45 +20,81 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 #ifndef WSEVENTS_H
 #define WSEVENTS_H
 
-#include <QtWebSockets/QWebSocket>
-#include <QTimer>
 #include <obs-frontend-api.h>
-#include <util/platform.h>
+#include <QListWidgetItem>
+
 #include "WSServer.h"
 
-class WSEvents : public QObject 
-{
-	Q_OBJECT
+class WSEvents : public QObject {
+  Q_OBJECT
+  public:
+    explicit WSEvents(WSServer* srv);
+    ~WSEvents();
+    static void FrontendEventHandler(
+        enum obs_frontend_event event, void* private_data);
+    void connectTransitionSignals(obs_source_t* transition);
+    void connectSceneSignals(obs_source_t* scene);
+    static WSEvents* Instance;
 
-	public:
-		explicit WSEvents(WSServer *server);
-		~WSEvents();
-		static void FrontendEventHandler(enum obs_frontend_event event, void *private_data);
+    uint64_t GetStreamingTime();
+    const char* GetStreamingTimecode();
+    uint64_t GetRecordingTime();
+    const char* GetRecordingTimecode();
 
-	private Q_SLOTS:
-		void StreamStatus();
+  private slots:
+    void deferredInitOperations();
+    void StreamStatus();
+    void TransitionDurationChanged(int ms);
+    void SelectedSceneChanged(
+        QListWidgetItem* current, QListWidgetItem* prev);
+    void ModeSwitchClicked(bool checked);
 
-	private:
-		WSServer *_srv;
-		uint64_t _streamStartTime;
-		uint64_t _lastBytesSent;
-		uint64_t _lastBytesSentTime;
-		void broadcastUpdate(const char *updateType, obs_data_t *additionalFields);
+  private:
+    WSServer* _srv;
+    signal_handler_t* transition_handler;
+    signal_handler_t* scene_handler;
 
-		void OnSceneChange();
-		void OnSceneListChange();
+    bool _streaming_active;
+    bool _recording_active;
 
-		void OnStreamStarting();
-		void OnStreamStarted();
-		void OnStreamStopping();
-		void OnStreamStopped();
+    uint64_t _stream_starttime;
+    uint64_t _rec_starttime;
 
-		void OnRecordingStarting();
-		void OnRecordingStarted();
-		void OnRecordingStopping();
-		void OnRecordingStopped();
+    uint64_t _lastBytesSent;
+    uint64_t _lastBytesSentTime;
 
-		void OnExit();
+    void broadcastUpdate(const char* updateType,
+        obs_data_t* additionalFields);
+
+    void OnSceneChange();
+    void OnSceneListChange();
+    void OnSceneCollectionChange();
+    void OnSceneCollectionListChange();
+
+    void OnTransitionChange();
+    void OnTransitionListChange();
+
+    void OnProfileChange();
+    void OnProfileListChange();
+
+    void OnStreamStarting();
+    void OnStreamStarted();
+    void OnStreamStopping();
+    void OnStreamStopped();
+
+    void OnRecordingStarting();
+    void OnRecordingStarted();
+    void OnRecordingStopping();
+    void OnRecordingStopped();
+
+    void OnExit();
+
+    static void OnTransitionBegin(void* param, calldata_t* data);
+
+    static void OnSceneReordered(void* param, calldata_t* data);
+    static void OnSceneItemAdd(void* param, calldata_t* data);
+    static void OnSceneItemDelete(void* param, calldata_t* data);
+    static void OnSceneItemVisibilityChanged(void* param, calldata_t* data);
 };
 
 #endif // WSEVENTS_H

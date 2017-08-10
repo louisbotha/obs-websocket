@@ -1,6 +1,6 @@
 /*
 obs-websocket
-Copyright (C) 2016	Stéphane Lepin <stephane.lepin@gmail.com>
+Copyright (C) 2016-2017	Stéphane Lepin <stephane.lepin@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 
 #include <QtCore/QObject>
 #include <QtCore/QList>
+#include <QtCore/QMutex>
 #include <QtCore/QByteArray>
 #include "Utils.h"
 #include "WSRequestHandler.h"
@@ -28,23 +29,26 @@ with this program. If not, see <https://www.gnu.org/licenses/>
 QT_FORWARD_DECLARE_CLASS(QWebSocketServer)
 QT_FORWARD_DECLARE_CLASS(QWebSocket)
 
-class WSServer : public QObject
-{
+class WSServer : public QObject {
 	Q_OBJECT
-
 	public:
-		explicit WSServer(quint16 port, QObject *parent = Q_NULLPTR);
+    explicit WSServer(QObject* parent = Q_NULLPTR);
 		virtual ~WSServer();
+    void Start(quint16 port);
+    void Stop();
 		void broadcast(QString message);
+    static WSServer* Instance;
 
-	private Q_SLOTS:
+  private slots:
 		void onNewConnection();
-		void socketDisconnected();
+    void onTextMessageReceived(QString message);
+    void onSocketDisconnected();
 
 	private:
-		QWebSocketServer *_wsServer;
-		QList<WSRequestHandler *> _clients;
-		QThread *_serverThread;
+    QWebSocketServer* _wsServer;
+    QList<QWebSocket*> _clients;
+    QMutex _clMutex;
+    QThread* _serverThread;
 };
 
 #endif // WSSERVER_H

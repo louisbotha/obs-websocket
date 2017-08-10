@@ -1,6 +1,6 @@
 /*
 obs-websocket
-Copyright (C) 2016	Stéphane Lepin <stephane.lepin@gmail.com>
+Copyright (C) 2016-2017	Stéphane Lepin <stephane.lepin@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,74 +16,136 @@ You should have received a copy of the GNU General Public License along
 with this program. If not, see <https://www.gnu.org/licenses/>
 */
 
-#include "Utils.h"
-#include "WSServer.h"
-#include "WSRequestHandler.h"
-#include "Config.h"
-#include <QtWebSockets/QWebSocketServer>
 #include <QtWebSockets/QWebSocket>
-#include <QtCore/QDebug>
 #include <QtCore/QThread>
+#include <QtCore/QByteArray>
 #include <obs-frontend-api.h>
+
+#include "WSServer.h"
+#include "obs-websocket.h"
+#include "Config.h"
+#include "Utils.h"
 
 QT_USE_NAMESPACE
 
-WSServer::WSServer(quint16 port, QObject *parent) :
-	QObject(parent),
-	_wsServer(Q_NULLPTR),
-	_clients()
-{
+WSServer* WSServer::Instance = nullptr;
+
+WSServer::WSServer(QObject* parent) :
+QObject(parent),
+_wsServer(Q_NULLPTR),
+_clients(),
+_clMutex(QMutex::Recursive) {
 	_serverThread = new QThread();
 	_wsServer = new QWebSocketServer(
 		QStringLiteral("obs-websocket"),
 		QWebSocketServer::NonSecureMode,
-		this);
-	_wsServer->moveToThread(_serverThread);
+		_serverThread);
 	_serverThread->start();
+}
+
+WSServer::~WSServer() {
+	Stop();
+	delete _serverThread;
+}
+
+void WSServer::Start(quint16 port) {
+	if (port == _wsServer->serverPort())
+		return;
+
+	if (_wsServer->isListening())
+		Stop();
 
 	bool serverStarted = _wsServer->listen(QHostAddress::Any, port);
 	if (serverStarted) {
-		connect(_wsServer, &QWebSocketServer::newConnection, this, &WSServer::onNewConnection);
+		connect(_wsServer, SIGNAL(newConnection()),
+			this, SLOT(onNewConnection()));
 	}
 }
 
-WSServer::~WSServer()
-{
+void WSServer::Stop() {
+	_clMutex.lock();
+	for (QWebSocket* pClient : _clients) {
+		pClient->close();
+	}
+	_clMutex.unlock();
+
 	_wsServer->close();
-	qDeleteAll(_clients.begin(), _clients.end());
 }
 
-void WSServer::broadcast(QString message)
-{
-	Q_FOREACH(WSRequestHandler *pClient, _clients) {
-		if (Config::Current()->AuthRequired == true 
-			&& pClient->isAuthenticated() == false) {
+void WSServer::broadcast(QString message) {
+	_clMutex.lock();
+	for (QWebSocket* pClient : _clients) {
+		if (Config::Current()->AuthRequired
+			&& (pClient->property(PROP_AUTHENTICATED).toBool() == false)) {
 			// Skip this client if unauthenticated
 			continue;
 		}
-
 		pClient->sendTextMessage(message);
 	}
+	_clMutex.unlock();
 }
 
-void WSServer::onNewConnection()
-{
-	QWebSocket *pSocket = _wsServer->nextPendingConnection();
-
+void WSServer::onNewConnection() {
+	QWebSocket* pSocket = _wsServer->nextPendingConnection();
 	if (pSocket) {
-		WSRequestHandler *pHandler = new WSRequestHandler(pSocket);
+		connect(pSocket, SIGNAL(textMessageReceived(const QString&)),
+			this, SLOT(onTextMessageReceived(QString)));
+		connect(pSocket, SIGNAL(disconnected()),
+			this, SLOT(onSocketDisconnected()));
 
-		connect(pHandler, &WSRequestHandler::disconnected, this, &WSServer::socketDisconnected);
-		_clients << pHandler;
+		pSocket->setProperty(PROP_AUTHENTICATED, false);
+
+		_clMutex.lock();
+		_clients << pSocket;
+		_clMutex.unlock();
+
+		QHostAddress clientAddr = pSocket->peerAddress();
+		QString clientIp = Utils::FormatIPAddress(clientAddr);
+
+		blog(LOG_INFO, "new client connection from %s:%d",
+			clientIp.toUtf8().constData(), pSocket->peerPort());
+
+		QString msg = QString(obs_module_text("OBSWebsocket.ConnectNotify.ClientIP"))
+			+ QString(" ")
+			+ clientAddr.toString();
+
+		Utils::SysTrayNotify(msg,
+			QSystemTrayIcon::Information,
+			QString(obs_module_text("OBSWebsocket.ConnectNotify.Connected")));
 	}
 }
 
-void WSServer::socketDisconnected()
-{
-	WSRequestHandler *pClient = qobject_cast<WSRequestHandler *>(sender());
+void WSServer::onTextMessageReceived(QString message) {
+	QWebSocket* pSocket = qobject_cast<QWebSocket*>(sender());
+	if (pSocket) {
+		WSRequestHandler handler(pSocket);
+		handler.processIncomingMessage(message);
+	}
+}
 
-	if (pClient) {
-		_clients.removeAll(pClient);
-		pClient->deleteLater();
+void WSServer::onSocketDisconnected() {
+	QWebSocket* pSocket = qobject_cast<QWebSocket*>(sender());
+	if (pSocket) {
+		pSocket->setProperty(PROP_AUTHENTICATED, false);
+
+		_clMutex.lock();
+		_clients.removeAll(pSocket);
+		_clMutex.unlock();
+
+		pSocket->deleteLater();
+
+		QHostAddress clientAddr = pSocket->peerAddress();
+		QString clientIp = Utils::FormatIPAddress(clientAddr);
+
+		blog(LOG_INFO, "client %s:%d disconnected",
+			clientIp.toUtf8().constData(), pSocket->peerPort());
+
+		QString msg = QString(obs_module_text("OBSWebsocket.ConnectNotify.ClientIP"))
+			+ QString(" ")
+			+ clientAddr.toString();
+
+		Utils::SysTrayNotify(msg,
+			QSystemTrayIcon::Information,
+			QString(obs_module_text("OBSWebsocket.ConnectNotify.Disconnected")));
 	}
 }

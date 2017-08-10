@@ -1,6 +1,6 @@
 /*
 obs-websocket
-Copyright (C) 2016	Stéphane Lepin <stephane.lepin@gmail.com>
+Copyright (C) 2016-2017	Stéphane Lepin <stephane.lepin@gmail.com>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,17 +30,17 @@ class SettingsDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit SettingsDialog(QWidget *parent = 0);
+    explicit SettingsDialog(QWidget* parent = 0);
     ~SettingsDialog();
-	void showEvent(QShowEvent *event);
-	void ToggleShowHide();
+    void showEvent(QShowEvent* event);
+    void ToggleShowHide();
 
 private Q_SLOTS:
-	void AuthCheckboxChanged();
-	void FormAccepted();
+    void AuthCheckboxChanged();
+    void FormAccepted();
 
 private:
-    Ui::SettingsDialog *ui;
+    Ui::SettingsDialog* ui;
 };
 
 #endif // SETTINGSDIALOG_H
